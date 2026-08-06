@@ -1,10 +1,9 @@
-import { useState } from "react";
 import { useLanguage } from "../language";
 import { useTheme } from "../theme";
 import { LANGUAGES } from "../i18n";
 import type { LanguageCode } from "../types";
-import TopNavigation from "@cloudscape-design/components/top-navigation";
-import ButtonDropdown from "@cloudscape-design/components/button-dropdown";
+import Button from "@cloudscape-design/components/button";
+import Select from "@cloudscape-design/components/select";
 import Toggle from "@cloudscape-design/components/toggle";
 import Icon from "@cloudscape-design/components/icon";
 
@@ -12,10 +11,9 @@ export default function Navbar() {
   const { lang, setLang, t } = useLanguage();
   const { mode, toggle } = useTheme();
 
-  const langItems = LANGUAGES.map((l) => ({
-    id: l.code,
-    text: l.label,
-    iconName: l.code === "ar" ? undefined : undefined,
+  const langOptions = LANGUAGES.map((l) => ({
+    label: l.label,
+    value: l.code,
   }));
 
   return (
@@ -45,25 +43,24 @@ export default function Navbar() {
           </span>
         </a>
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <ButtonDropdown
-            items={langItems}
-            onItemClick={({ detail }) =>
-              setLang(detail.id as LanguageCode)
+          <Select
+            selectedOption={
+              langOptions.find((o) => o.value === lang) ?? langOptions[0]
             }
-            variant="inline-icon"
-            iconName="globe"
+            onChange={({ detail }) =>
+              setLang(detail.selectedOption.value as LanguageCode)
+            }
+            options={langOptions}
             ariaLabel={t("language")}
-          >
-            {LANGUAGES.find((l) => l.code === lang)?.label ?? "English"}
-          </ButtonDropdown>
+            expandToViewport
+            triggerVariant="option"
+          />
           <Toggle
             onChange={toggle}
             checked={mode === "dark"}
             ariaLabel={mode === "dark" ? t("darkMode") : t("lightMode")}
           />
-          <Icon
-            name={mode === "dark" ? "light-dark" : "light-dark"}
-          />
+          <Icon name="light-dark" />
         </div>
       </div>
     </div>
