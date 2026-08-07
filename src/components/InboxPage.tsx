@@ -280,19 +280,21 @@ export default function InboxPage({ emailId, onBack }: InboxPageProps) {
                 <Badge color="blue">{t("attachments")}: {t("yes")}</Badge>
               )}
               <Box>
-                {selectedMessage.text ? (
-                  <Box variant="pre">{selectedMessage.text}</Box>
-                ) : selectedMessage.html && selectedMessage.html.length > 0 ? (
+                {selectedMessage.html && selectedMessage.html.length > 0 ? (
                   <Box>
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: selectedMessage.html.join(""),
-                      }}
-                    />
-                  </Box>
-                ) : (
-                  <Box color="text-body-secondary">{selectedMessage.intro || "—"}</Box>
-                )}
+    <div
+      dangerouslySetInnerHTML={{
+        __html: selectedMessage.html.join(""),
+      }}
+    />
+  </Box>
+) : selectedMessage.text ? (
+  <Box variant="pre">{selectedMessage.text}</Box>
+) : (
+  <Box color="text-body-secondary">
+    {selectedMessage.intro || "—"}
+                   </Box>
+)}
               </Box>
             </SpaceBetween>
           </Container>
