@@ -2,7 +2,7 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 const MAIL_TM_BASE = "https://api.mail.tm";
 
-const CORS_HEADERS: Record<string, string> = {
+const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
   "Access-Control-Allow-Headers":
@@ -13,99 +13,126 @@ export default async function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
-  // CORS preflight
-  if (req.method === "OPTIONS") {
+  try {
+    // CORS
     for (const [key, value] of Object.entries(CORS_HEADERS)) {
       res.setHeader(key, value);
     }
 
-    return res.status(200).end();
-  }
+    if (req.method === "OPTIONS") {
+      return res.status(200).end();
+    }
 
-const requestUrl = req.url || "";
+    // Get path from Vercel request URL
+    const requestUrl = req.url || "";
 
-const parsedUrl = new URL(
-  requestUrl,
-  `https://${req.headers.host || "email-tm.vercel.app"}`
-);
+    const parsedUrl = new URL(
+      requestUrl,
+      "https://email-tm.vercel.app"
+    );
 
-const prefix = "/api/mailtm/";
-const path = parsedUrl.pathname.startsWith(prefix)
-  ? parsedUrl.pathname.slice(prefix.length)
-  : "";
+    const prefix = "/api/mailtm/";
 
-if (!path) {
-  return res.status(400).json({
-    error: "Missing path",
-    url: requestUrl,
-    pathname: parsedUrl.pathname,
-  });
-}
+    if (!parsedUrl.pathname.startsWith(prefix)) {
+      return res.status(400).json({
+        error: "Invalid path",
+        requestUrl,
+        pathname: parsedUrl.pathname,
+      });
+    }
 
-const url = `${MAIL_TM_BASE}/${path}${parsedUrl.search}`;
-  const method = req.method || "GET";
+    const path = parsedUrl.pathname.slice(prefix.length);
 
-  const headers: Record<string, string> = {
-    Accept: "application/json",
-  };
+    if (!path) {
+      return res.status(400).json({
+        error: "Missing path",
+        requestUrl,
+        pathname: parsedUrl.pathname,
+      });
+    }
 
-  if (req.headers["content-type"]) {
-    headers["Content-Type"] = req.headers["content-type"];
-  }
+    const targetUrl =
+      `${MAIL_TM_BASE}/${path}${parsedUrl.search}`;
 
-  if (req.headers["authorization"]) {
-    headers["Authorization"] = req.headers["authorization"] as string;
-  }
+    // Headers
+    const headers = new Headers();
 
-  if (method !== "GET" && method !== "HEAD" && !headers["Content-Type"]) {
-    headers["Content-Type"] = "application/json";
-  }
+    headers.set("Accept", "application/json");
 
-  const init: RequestInit = {
-    method,
-    headers: new Headers(headers),
-  };
+    const contentType = req.headers["content-type"];
 
-  // Forward request body
-  if (method !== "GET" && method !== "HEAD") {
-    if (req.body !== undefined && req.body !== null) {
-      if (typeof req.body === "string") {
-        init.body = req.body;
-      } else if (Buffer.isBuffer(req.body)) {
-        init.body = new Uint8Array(req.body);
-      } else {
-        init.body = JSON.stringify(req.body);
+    if (contentType) {
+      headers.set(
+        "Content-Type",
+        Array.isArray(contentType) ? contentType[0] : contentType
+      );
+    }
+
+    const authorization = req.headers["authorization"];
+
+    if (authorization) {
+      headers.set(
+        "Authorization",
+        Array.isArray(authorization)
+          ? authorization[0]
+          : authorization
+      );
+    }
+
+    const method = req.method || "GET";
+
+    // Request options
+    const options: RequestInit = {
+      method,
+      headers,
+    };
+
+    if (method !== "GET" && method !== "HEAD") {
+      if (req.body !== undefined && req.body !== null) {
+        if (typeof req.body === "string") {
+          options.body = req.body;
+        } else {
+          options.body = JSON.stringify(req.body);
+        }
       }
     }
-  }
 
-  try {
-    const upstream = await fetch(url, init);
+    console.log("Mail.tm proxy request:", {
+      method,
+      targetUrl,
+    });
 
-    const contentType =
-      upstream.headers.get("content-type") || "application/json";
+    // Call Mail.tm
+    const upstream = await fetch(targetUrl, options);
+
+    const responseText = await upstream.text();
+
+    console.log("Mail.tm response:", {
+      status: upstream.status,
+      contentType: upstream.headers.get("content-type"),
+    });
 
     res.status(upstream.status);
 
-    for (const [key, value] of Object.entries(CORS_HEADERS)) {
-      res.setHeader(key, value);
+    const upstreamContentType =
+      upstream.headers.get("content-type");
+
+    if (upstreamContentType) {
+      res.setHeader("Content-Type", upstreamContentType);
     }
 
-    res.setHeader("Content-Type", contentType);
+    return res.send(responseText);
+  } catch (error) {
+    console.error("Mail.tm proxy error:", error);
 
-    if (contentType.includes("application/json")) {
-      const data = await upstream.json();
-      return res.send(data);
-    }
-
-    const buffer = Buffer.from(await upstream.arrayBuffer());
-    return res.send(buffer);
-  } catch (err) {
     const message =
-      err instanceof Error ? err.message : "Upstream request failed";
+      error instanceof Error
+        ? error.message
+        : String(error);
 
-    return res.status(502).json({
-      error: message,
+    return res.status(500).json({
+      error: "Mail.tm proxy failed",
+      message,
     });
   }
 }
