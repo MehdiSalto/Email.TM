@@ -6,7 +6,7 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-const MAIL_TM_BASE = "https://api.mail.tm";
+const MAIL_TM_BASE = "/api/mailtm";
 
 const DURATION_MS: Record<DurationKey, number> = {
   "1h": 60 * 60 * 1000,
