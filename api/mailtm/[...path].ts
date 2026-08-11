@@ -5,30 +5,54 @@ const MAIL_TM_BASE = "https://api.mail.tm";
 const CORS_HEADERS: Record<string, string> = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
+  "Access-Control-Allow-Headers":
+    "Content-Type, Authorization, X-Client-Info, Apikey",
 };
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(
+  req: VercelRequest,
+  res: VercelResponse
+) {
+  // CORS preflight
   if (req.method === "OPTIONS") {
     for (const [key, value] of Object.entries(CORS_HEADERS)) {
       res.setHeader(key, value);
     }
+
     return res.status(200).end();
   }
 
-  const pathParam = req.query.path;
-  const path = Array.isArray(pathParam) ? pathParam.join("/") : pathParam || "";
-  if (!path) {
-    return res.status(400).json({ error: "Missing path" });
-  }
+const requestUrl = req.url || "";
 
-  const url = `${MAIL_TM_BASE}/${path}`;
+const parsedUrl = new URL(
+  requestUrl,
+  `https://${req.headers.host || "email-tm.vercel.app"}`
+);
+
+const prefix = "/api/mailtm/";
+const path = parsedUrl.pathname.startsWith(prefix)
+  ? parsedUrl.pathname.slice(prefix.length)
+  : "";
+
+if (!path) {
+  return res.status(400).json({
+    error: "Missing path",
+    url: requestUrl,
+    pathname: parsedUrl.pathname,
+  });
+}
+
+const url = `${MAIL_TM_BASE}/${path}${parsedUrl.search}`;
   const method = req.method || "GET";
 
-  const headers: Record<string, string> = { Accept: "application/json" };
+  const headers: Record<string, string> = {
+    Accept: "application/json",
+  };
+
   if (req.headers["content-type"]) {
     headers["Content-Type"] = req.headers["content-type"];
   }
+
   if (req.headers["authorization"]) {
     headers["Authorization"] = req.headers["authorization"] as string;
   }
@@ -37,8 +61,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     headers["Content-Type"] = "application/json";
   }
 
-  const init: RequestInit = { method, headers: new Headers(headers) };
+  const init: RequestInit = {
+    method,
+    headers: new Headers(headers),
+  };
 
+  // Forward request body
   if (method !== "GET" && method !== "HEAD") {
     if (req.body !== undefined && req.body !== null) {
       if (typeof req.body === "string") {
@@ -53,23 +81,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     const upstream = await fetch(url, init);
-    const contentType = upstream.headers.get("content-type") || "";
+
+    const contentType =
+      upstream.headers.get("content-type") || "application/json";
 
     res.status(upstream.status);
+
     for (const [key, value] of Object.entries(CORS_HEADERS)) {
       res.setHeader(key, value);
     }
-    res.setHeader("Content-Type", contentType || "application/json");
+
+    res.setHeader("Content-Type", contentType);
 
     if (contentType.includes("application/json")) {
       const data = await upstream.json();
       return res.send(data);
-    } else {
-      const buffer = Buffer.from(await upstream.arrayBuffer());
-      return res.send(buffer);
     }
+
+    const buffer = Buffer.from(await upstream.arrayBuffer());
+    return res.send(buffer);
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Upstream request failed";
-    return res.status(502).json({ error: message });
+    const message =
+      err instanceof Error ? err.message : "Upstream request failed";
+
+    return res.status(502).json({
+      error: message,
+    });
   }
 }
