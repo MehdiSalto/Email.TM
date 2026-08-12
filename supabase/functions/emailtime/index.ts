@@ -143,7 +143,7 @@ Deno.serve(async (req: Request) => {
 
   try {
     const url = new URL(req.url);
-    const path = url.pathname.replace(/^\/emailtime\/?/, "");
+    const path = url.pathname.replace(/^\/functions\/v1\/emailtime\/?/, "");
 
     // Run cleanup on every request
     await supabase.rpc("cleanup_expired_emails");
