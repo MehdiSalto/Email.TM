@@ -31,52 +31,49 @@ export default async function handler(
 
     if (!path) {
       return res.status(400).json({
-        ok: false,
         error: "Missing path",
-        query: req.query,
       });
     }
 
-    const targetUrl = `${MAIL_TM_BASE}/${path}`;
+    const params = new URLSearchParams();
 
-    console.log("MAILTM TARGET:", targetUrl);
+    for (const [key, value] of Object.entries(req.query)) {
+      if (key === "...path") continue;
+
+      if (Array.isArray(value)) {
+        value.forEach((v) => params.append(key, v));
+      } else if (typeof value === "string") {
+        params.append(key, value);
+      }
+    }
+
+    const query = params.toString();
+    const targetUrl =
+      `${MAIL_TM_BASE}/${path}` + (query ? `?${query}` : "");
+
+    console.log("MAILTM URL:", targetUrl);
 
     const upstream = await fetch(targetUrl, {
-      method: req.method || "GET",
+      method: "GET",
       headers: {
         Accept: "application/json",
-        "User-Agent": "EmailTM/1.0",
+        "User-Agent": "curl/8.0",
       },
     });
 
     const body = await upstream.text();
 
-    const headers: Record<string, string> = {};
-
-    upstream.headers.forEach((value, key) => {
-      headers[key] = value;
-    });
-
-    console.log("MAILTM DEBUG:", {
+    console.log("MAILTM RESULT:", {
       status: upstream.status,
       statusText: upstream.statusText,
-      headers,
-      bodyLength: body.length,
       body,
     });
 
-    return res.status(200).json({
-      ok: true,
-      mailTmStatus: upstream.status,
-      mailTmStatusText: upstream.statusText,
-      mailTmHeaders: headers,
-      body,
-    });
+    return res.status(upstream.status).send(body);
   } catch (error) {
-    console.error("MAILTM FETCH ERROR:", error);
+    console.error("MAILTM ERROR:", error);
 
     return res.status(500).json({
-      ok: false,
       error: error instanceof Error
         ? error.message
         : String(error),
