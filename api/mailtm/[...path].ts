@@ -19,44 +19,62 @@ export default async function handler(
       res.setHeader(key, value);
     }
 
-    return res.status(200).end();
+    return res.status(204).end();
   }
 
-  // Vercel catch-all route parameter
-  const pathParam = req.query["...path"];
+  /*
+   * Vercel catch-all routes can expose the parameter as:
+   *   path
+   * or:
+   *   ...path
+   */
+  const rawPath =
+    req.query.path ??
+    req.query["...path"];
 
-  const path = Array.isArray(pathParam)
-    ? pathParam.join("/")
-    : typeof pathParam === "string"
-      ? pathParam
-      : "";
+  let path = "";
+
+  if (Array.isArray(rawPath)) {
+    path = rawPath.join("/");
+  } else if (typeof rawPath === "string") {
+    path = rawPath;
+  }
+
+  path = path.replace(/^\/+|\/+$/g, "");
 
   if (!path) {
     return res.status(400).json({
       error: "Missing path",
       query: req.query,
+      url: req.url,
     });
   }
 
-  // Preserve query parameters
-  const queryParts = new URLSearchParams();
+  /*
+   * Build query parameters from req.query.
+   * Remove the catch-all route parameter itself.
+   */
+  const searchParams = new URLSearchParams();
 
   for (const [key, value] of Object.entries(req.query)) {
-    if (key === "...path") continue;
+    if (key === "path" || key === "...path") {
+      continue;
+    }
 
     if (Array.isArray(value)) {
       for (const item of value) {
-        queryParts.append(key, item);
+        searchParams.append(key, item);
       }
     } else if (typeof value === "string") {
-      queryParts.set(key, value);
+      searchParams.append(key, value);
     }
   }
 
-  const queryString = queryParts.toString();
-  const url = `${MAIL_TM_BASE}/${path}${
-    queryString ? `?${queryString}` : ""
-  }`;
+  const queryString = searchParams.toString();
+
+  const url =
+    `${MAIL_TM_BASE}/${path}` +
+    (queryString ? `?${queryString}` : "");
 
   const method = req.method || "GET";
 
@@ -72,7 +90,11 @@ export default async function handler(
     headers["Authorization"] = req.headers["authorization"] as string;
   }
 
-  if (method !== "GET" && method !== "HEAD" && !headers["Content-Type"]) {
+  if (
+    method !== "GET" &&
+    method !== "HEAD" &&
+    !headers["Content-Type"]
+  ) {
     headers["Content-Type"] = "application/json";
   }
 
@@ -95,10 +117,17 @@ export default async function handler(
   }
 
   try {
+    console.log("Mail.tm proxy request:", {
+      method,
+      url,
+      path,
+    });
+
     const upstream = await fetch(url, init);
 
     const contentType =
-      upstream.headers.get("content-type") || "application/json";
+      upstream.headers.get("content-type") ||
+      "application/json";
 
     res.status(upstream.status);
 
@@ -113,11 +142,22 @@ export default async function handler(
       return res.send(data);
     }
 
-    const buffer = Buffer.from(await upstream.arrayBuffer());
+    const buffer = Buffer.from(
+      await upstream.arrayBuffer()
+    );
+
     return res.send(buffer);
   } catch (err) {
+    console.error("Mail.tm proxy error:", err);
+
     const message =
-      err instanceof Error ? err.message : "Upstream request failed";
+      err instanceof Error
+        ? err.message
+        : "Upstream request failed";
+
+    for (const [key, value] of Object.entries(CORS_HEADERS)) {
+      res.setHeader(key, value);
+    }
 
     return res.status(502).json({
       error: message,
