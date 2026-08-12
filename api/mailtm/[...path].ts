@@ -2,20 +2,19 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 const MAIL_TM_BASE = "https://api.mail.tm";
 
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-  "Access-Control-Allow-Headers":
-    "Content-Type, Authorization, X-Client-Info, Apikey",
-};
-
 export default async function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
-  for (const [key, value] of Object.entries(CORS_HEADERS)) {
-    res.setHeader(key, value);
-  }
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization, X-Client-Info, Apikey"
+  );
 
   if (req.method === "OPTIONS") {
     return res.status(204).end();
@@ -37,92 +36,37 @@ export default async function handler(
       });
     }
 
-    const searchParams = new URLSearchParams();
+    const targetUrl = `${MAIL_TM_BASE}/${path}`;
 
-    for (const [key, value] of Object.entries(req.query)) {
-      if (key === "...path") continue;
+    console.log("MAILTM TARGET:", targetUrl);
 
-      if (Array.isArray(value)) {
-        for (const item of value) {
-          searchParams.append(key, item);
-        }
-      } else if (typeof value === "string") {
-        searchParams.append(key, value);
-      }
-    }
-
-    const query = searchParams.toString();
-
-    const targetUrl =
-      `${MAIL_TM_BASE}/${path}` + (query ? `?${query}` : "");
-
-    const method = req.method || "GET";
-
-    const headers: Record<string, string> = {
-      Accept: "application/json",
-      "User-Agent": "EmailTM/1.0",
-    };
-
-    const authorization = req.headers.authorization;
-    const contentType = req.headers["content-type"];
-
-    if (authorization) {
-      headers.Authorization = authorization;
-    }
-
-    if (contentType) {
-      headers["Content-Type"] = contentType;
-    }
-
-    const init: RequestInit = {
-      method,
-      headers,
-    };
-
-    if (method !== "GET" && method !== "HEAD") {
-      if (req.body !== undefined && req.body !== null) {
-        if (typeof req.body === "string") {
-          init.body = req.body;
-        } else if (Buffer.isBuffer(req.body)) {
-          init.body = new Uint8Array(req.body);
-        } else {
-          init.body = JSON.stringify(req.body);
-        }
-      }
-    }
-
-    console.log("Mail.tm proxy request:", {
-      method,
-      targetUrl,
+    const upstream = await fetch(targetUrl, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "User-Agent": "EmailTM/1.0",
+      },
     });
 
-    const upstream = await fetch(targetUrl, init);
+    const body = await upstream.text();
 
-    const responseBody = await upstream.text();
-
-    console.log("Mail.tm proxy response:", {
-      status: upstream.status,
-      contentType: upstream.headers.get("content-type"),
-      bodyLength: responseBody.length,
-    });
+    console.log("MAILTM STATUS:", upstream.status);
+    console.log("MAILTM BODY LENGTH:", body.length);
 
     res.status(upstream.status);
-
-    const upstreamContentType =
+    res.setHeader(
+      "Content-Type",
       upstream.headers.get("content-type") ||
-      "application/json; charset=utf-8";
+        "application/json; charset=utf-8"
+    );
 
-    res.setHeader("Content-Type", upstreamContentType);
-
-    return res.send(responseBody);
+    return res.send(body);
   } catch (error) {
-    console.error("Mail.tm proxy exception:", error);
+    console.error("MAILTM ERROR:", error);
 
-    return res.status(502).json({
-      error:
-        error instanceof Error
-          ? error.message
-          : String(error),
+    return res.status(500).json({
+      ok: false,
+      error: error instanceof Error ? error.message : String(error),
     });
   }
 }
