@@ -31,6 +31,7 @@ export default async function handler(
 
     if (!path) {
       return res.status(400).json({
+        ok: false,
         error: "Missing path",
         query: req.query,
       });
@@ -41,7 +42,7 @@ export default async function handler(
     console.log("MAILTM TARGET:", targetUrl);
 
     const upstream = await fetch(targetUrl, {
-      method: "GET",
+      method: req.method || "GET",
       headers: {
         Accept: "application/json",
         "User-Agent": "EmailTM/1.0",
@@ -50,23 +51,35 @@ export default async function handler(
 
     const body = await upstream.text();
 
-    console.log("MAILTM STATUS:", upstream.status);
-    console.log("MAILTM BODY LENGTH:", body.length);
+    const headers: Record<string, string> = {};
 
-    res.status(upstream.status);
-    res.setHeader(
-      "Content-Type",
-      upstream.headers.get("content-type") ||
-        "application/json; charset=utf-8"
-    );
+    upstream.headers.forEach((value, key) => {
+      headers[key] = value;
+    });
 
-    return res.send(body);
+    console.log("MAILTM DEBUG:", {
+      status: upstream.status,
+      statusText: upstream.statusText,
+      headers,
+      bodyLength: body.length,
+      body,
+    });
+
+    return res.status(200).json({
+      ok: true,
+      mailTmStatus: upstream.status,
+      mailTmStatusText: upstream.statusText,
+      mailTmHeaders: headers,
+      body,
+    });
   } catch (error) {
-    console.error("MAILTM ERROR:", error);
+    console.error("MAILTM FETCH ERROR:", error);
 
     return res.status(500).json({
       ok: false,
-      error: error instanceof Error ? error.message : String(error),
+      error: error instanceof Error
+        ? error.message
+        : String(error),
     });
   }
 }
