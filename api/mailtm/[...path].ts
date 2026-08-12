@@ -2,119 +2,125 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 const MAIL_TM_BASE = "https://api.mail.tm";
 
+const CORS_HEADERS: Record<string, string> = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers":
+    "Content-Type, Authorization, X-Client-Info, Apikey",
+};
+
 export default async function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
-  // CORS
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, OPTIONS"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization"
-  );
-
+  // CORS preflight
   if (req.method === "OPTIONS") {
+    for (const [key, value] of Object.entries(CORS_HEADERS)) {
+      res.setHeader(key, value);
+    }
+
     return res.status(200).end();
   }
 
-  try {
-    // Vercel catch-all route:
-    // /api/mailtm/domains?page=1
-    // path = ["domains"]
-    const pathParam = req.query.path;
+  // Vercel catch-all route parameter
+  const pathParam = req.query["...path"];
 
-    let path = "";
+  const path = Array.isArray(pathParam)
+    ? pathParam.join("/")
+    : typeof pathParam === "string"
+      ? pathParam
+      : "";
 
-    if (Array.isArray(pathParam)) {
-      path = pathParam.join("/");
-    } else if (typeof pathParam === "string") {
-      path = pathParam;
-    }
-
-    if (!path) {
-      return res.status(400).json({
-        error: "Missing path",
-        query: req.query,
-        url: req.url,
-      });
-    }
-
-    const queryString = new URLSearchParams();
-
-    for (const [key, value] of Object.entries(req.query)) {
-      if (key === "path") continue;
-
-      if (Array.isArray(value)) {
-        for (const item of value) {
-          queryString.append(key, item);
-        }
-      } else if (value !== undefined) {
-        queryString.set(key, value);
-      }
-    }
-
-    const query = queryString.toString();
-
-    const targetUrl =
-      `${MAIL_TM_BASE}/${path}` + (query ? `?${query}` : "");
-
-    const headers: Record<string, string> = {
-      Accept: "application/json",
-    };
-
-    if (req.headers.authorization) {
-      headers.Authorization = req.headers.authorization;
-    }
-
-    if (req.headers["content-type"]) {
-      headers["Content-Type"] = req.headers["content-type"];
-    }
-
-    const options: RequestInit = {
-      method: req.method || "GET",
-      headers,
-    };
-
-    if (
-      req.method !== "GET" &&
-      req.method !== "HEAD" &&
-      req.body !== undefined
-    ) {
-      if (typeof req.body === "string") {
-        options.body = req.body;
-      } else {
-        options.body = JSON.stringify(req.body);
-      }
-    }
-
-    console.log("Mail.tm proxy:", {
-      method: req.method,
-      path,
-      targetUrl,
+  if (!path) {
+    return res.status(400).json({
+      error: "Missing path",
+      query: req.query,
     });
+  }
 
-    const response = await fetch(targetUrl, options);
+  // Preserve query parameters
+  const queryParts = new URLSearchParams();
+
+  for (const [key, value] of Object.entries(req.query)) {
+    if (key === "...path") continue;
+
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        queryParts.append(key, item);
+      }
+    } else if (typeof value === "string") {
+      queryParts.set(key, value);
+    }
+  }
+
+  const queryString = queryParts.toString();
+  const url = `${MAIL_TM_BASE}/${path}${
+    queryString ? `?${queryString}` : ""
+  }`;
+
+  const method = req.method || "GET";
+
+  const headers: Record<string, string> = {
+    Accept: "application/json",
+  };
+
+  if (req.headers["content-type"]) {
+    headers["Content-Type"] = req.headers["content-type"];
+  }
+
+  if (req.headers["authorization"]) {
+    headers["Authorization"] = req.headers["authorization"] as string;
+  }
+
+  if (method !== "GET" && method !== "HEAD" && !headers["Content-Type"]) {
+    headers["Content-Type"] = "application/json";
+  }
+
+  const init: RequestInit = {
+    method,
+    headers: new Headers(headers),
+  };
+
+  // Forward request body
+  if (method !== "GET" && method !== "HEAD") {
+    if (req.body !== undefined && req.body !== null) {
+      if (typeof req.body === "string") {
+        init.body = req.body;
+      } else if (Buffer.isBuffer(req.body)) {
+        init.body = new Uint8Array(req.body);
+      } else {
+        init.body = JSON.stringify(req.body);
+      }
+    }
+  }
+
+  try {
+    const upstream = await fetch(url, init);
 
     const contentType =
-      response.headers.get("content-type") || "application/json";
+      upstream.headers.get("content-type") || "application/json";
 
-    const body = await response.arrayBuffer();
+    res.status(upstream.status);
 
-    res.status(response.status);
+    for (const [key, value] of Object.entries(CORS_HEADERS)) {
+      res.setHeader(key, value);
+    }
+
     res.setHeader("Content-Type", contentType);
 
-    return res.send(Buffer.from(body));
-  } catch (error) {
-    console.error("Mail.tm proxy error:", error);
+    if (contentType.includes("application/json")) {
+      const data = await upstream.json();
+      return res.send(data);
+    }
+
+    const buffer = Buffer.from(await upstream.arrayBuffer());
+    return res.send(buffer);
+  } catch (err) {
+    const message =
+      err instanceof Error ? err.message : "Upstream request failed";
 
     return res.status(502).json({
-      error: "Mail.tm proxy failed",
-      message:
-        error instanceof Error ? error.message : String(error),
+      error: message,
     });
   }
 }
