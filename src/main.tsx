@@ -5,6 +5,31 @@ import App from "./App";
 // Cloudscape global styles (required for all Cloudscape components)
 import "@cloudscape-design/global-styles/index.css";
 
+const fontStyle = document.createElement("style");
+
+fontStyle.textContent = `
+  html,
+  body,
+  #root {
+    font-family:
+      Inter,
+      "Segoe UI",
+      Roboto,
+      Helvetica,
+      Arial,
+      sans-serif;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font-family: inherit;
+  }
+`;
+
+document.head.appendChild(fontStyle);
+
 // -------------------------------------------------------------------
 // Theme configuration
 // -------------------------------------------------------------------

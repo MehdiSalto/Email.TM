@@ -108,23 +108,27 @@ export default function Dashboard({ onOpenInbox, onCreate, refreshKey }: Dashboa
               {
                 id: "actions",
                 header: t("actions"),
+                width: 150,
                 cell: (item: EmailRecord) => (
-                  <SpaceBetween direction="horizontal" size="xs">
-                    <Button
-                      variant="link"
-                      iconName="external"
-                      onClick={() => onOpenInbox(item.id)}
-                    >
-                      {t("openInbox")}
-                    </Button>
-                    <Button
-                      variant="icon"
-                      iconName="remove"
-                      ariaLabel={t("actions")}
-                      onClick={() => handleDelete(item.id)}
-                    />
-                  </SpaceBetween>
-                ),
+  <SpaceBetween direction="horizontal" size="xs">
+    <span style={{ whiteSpace: "nowrap" }}>
+      <Button
+        variant="link"
+        iconName="external"
+        onClick={() => onOpenInbox(item.id)}
+      >
+        {t("openInbox")}
+      </Button>
+    </span>
+
+    <Button
+      variant="icon"
+      iconName="remove"
+      ariaLabel={t("actions")}
+      onClick={() => handleDelete(item.id)}
+    />
+  </SpaceBetween>
+),
               },
             ]}
             items={emails}
