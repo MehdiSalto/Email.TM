@@ -13,6 +13,18 @@
     <loc>https://email-tm.vercel.app/#/privacy-policy</loc>
   </url>
   <url>
-    <loc>https://email.vercel.app/#/terms</loc>
+    <loc>https://email-tm.vercel.app/#/terms</loc>
+  </url>
+  <url>
+    <loc>https://email-tm.vercel.app/#/faq</loc>
+  </url>
+  <url>
+    <loc>https://email-tm.vercel.app/#/how-it-works</loc>
+  </url>
+  <url>
+    <loc>https://email-tm.vercel.app/#/what-is-temporary-email</loc>
+  </url>
+  <url>
+    <loc>https://email-tm.vercel.app/#/guides</loc>
   </url>
 </urlset>

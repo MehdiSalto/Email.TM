@@ -33,14 +33,14 @@ const guides = [
       "Avoid using temporary email for banking, financial services, important personal accounts, or other services where losing access to the email address could cause problems.",
     ],
   },
-  {
-    title: "What Happens When a Temporary Email Expires?",
-    paragraphs: [
-      "A temporary email is designed to remain available only for its selected lifetime. After that period, the address is considered expired.",
-      "Email.TM performs cleanup of expired email records. This means you should not rely on an expired address being available later.",
-      "For this reason, save anything important before the temporary email expires and never use a temporary address as the only recovery method for an important account.",
-    ],
-  },
+{
+  title: "What Happens When a Temporary Email Expires?",
+  paragraphs: [
+    "A temporary email is designed to remain available only for its selected lifetime. After that period, the address is considered expired.",
+    "Email.TM removes the associated expired temporary email record from its application database. After expiration, you should not rely on the temporary email address or its inbox remaining available through Email.TM.",
+    "For this reason, save anything important before the temporary email expires and never use a temporary address as the only recovery method for an important account.",
+  ],
+},
 ];
 
 export default function GuidesPage() {

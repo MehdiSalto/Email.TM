@@ -133,12 +133,13 @@ export default function WhatIsTemporaryEmailPage() {
       <section>
         <h2>Using Email.TM</h2>
 
-        <p>
-          Email.TM lets you create a temporary email address, choose an
-          available lifetime, and use the address to receive messages while it
-          is active. When the temporary email expires, the service performs
-          cleanup of expired email records.
-        </p>
+<p>
+  Email.TM lets you create a temporary email address, choose an
+  available lifetime, and use the address to receive messages while it
+  is active. When the temporary email expires, Email.TM removes the
+  associated temporary email record from its application database, and
+  the inbox may no longer be available through Email.TM.
+</p>
 
         <p>
           If you are new to temporary email, see our{" "}

@@ -26,11 +26,11 @@ const steps = [
     text:
       "Open the inbox associated with your temporary email to check received messages. You can refresh the inbox to check for new messages.",
   },
-  {
-    title: "6. The temporary email expires",
-    text:
-      "When the selected lifetime has passed, the temporary email is considered expired. The service performs cleanup of expired email records.",
-  },
+{
+  title: "6. The temporary email expires",
+  text:
+    "When the selected lifetime has passed, the temporary email is considered expired. Email.TM removes the associated temporary email record from its application database, and the inbox may no longer be available through Email.TM.",
+},
 ];
 
 export default function HowItWorksPage() {

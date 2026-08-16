@@ -28,8 +28,9 @@ export default function PrivacyPolicyPage() {
         </p>
         <p>
           Temporary email accounts are intended for short-term use. When a
-          temporary email expires, the service is designed to remove its
-          associated temporary email record and messages.
+          temporary email expires, Email.TM removes the associated temporary
+          email record from its application database. The availability and
+          retention of messages may also depend on the underlying mail service.
         </p>
       </section>
 

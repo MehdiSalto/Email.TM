@@ -46,6 +46,38 @@ const en: StringMap = {
   dashboardSubtitle: "All the temporary emails you've created in this session.",
   noEmails: "You haven't created any emails yet.",
   noEmailsHint: "Click \"Create New\" to generate your first temporary email.",
+    homeIntroTitle: "Free Temporary Email",
+  homeIntroText:
+    "Create a temporary email address instantly and use it to receive emails without giving your primary inbox address.",
+  homeWhatTitle: "What Is Temporary Email?",
+  homeWhatText:
+    "A temporary email is a short-lived email address designed for situations where you want to receive messages without using your regular email address.",
+  homeHowTitle: "How It Works",
+    homeWhyTitle: "Why Use Email.TM?",
+  homeWhyText:
+    "Email.TM can be useful when you want to receive messages without sharing your primary email address. It can help reduce unwanted messages in your main inbox and provide a convenient temporary address for short-term situations.",
+      homeFaqTitle: "Frequently Asked Questions",
+  homeFaqQuestion1: "What is a temporary email?",
+  homeFaqAnswer1:
+    "A temporary email is a short-lived email address that can be used to receive messages without using your primary email address.",
+  homeFaqQuestion2: "Can I receive emails?",
+  homeFaqAnswer2:
+    "Yes. Email.TM allows you to receive messages in your temporary inbox.",
+  homeFaqQuestion3: "How long does a temporary email last?",
+  homeFaqAnswer3:
+    "The email lasts according to the lifetime you select when creating it.",
+  homeFaqQuestion4: "Can I recover an expired email?",
+  homeFaqAnswer4:
+    "No. Once a temporary email expires, it cannot be recovered.",
+  homeFaqLink: "View all FAQ",
+    homeStepCreateTitle: "1. Create an email",
+  homeStepCreateText: "Generate a temporary email address in seconds.",
+  homeStepReceiveTitle: "2. Receive messages",
+  homeStepReceiveText:
+    "Use your temporary address to receive emails in your inbox.",
+  homeStepExpireTitle: "3. Email expires",
+  homeStepExpireText:
+    "Your temporary email expires automatically according to its selected lifetime.",
   emailColumn: "Email address",
   expiresIn: "Expires in",
   actions: "Actions",
@@ -114,6 +146,38 @@ const ar: StringMap = {
   dashboardSubtitle: "كل رسائل البريد المؤقت التي أنشأتها في هذه الجلسة.",
   noEmails: "لم تنشئ أي بريد بعد.",
   noEmailsHint: "اضغط \"إنشاء جديد\" لإنشاء أول بريد إلكتروني مؤقت.",
+    homeIntroTitle: "بريد إلكتروني مؤقت مجاني",
+  homeIntroText:
+    "أنشئ عنوان بريد إلكتروني مؤقتًا فورًا واستخدمه لاستقبال الرسائل دون الحاجة إلى مشاركة بريدك الإلكتروني الأساسي.",
+  homeWhatTitle: "ما هو البريد الإلكتروني المؤقت؟",
+  homeWhatText:
+    "البريد الإلكتروني المؤقت هو عنوان بريد قصير المدة يُستخدم لاستقبال الرسائل دون الحاجة إلى استخدام عنوان بريدك الإلكتروني العادي.",
+  homeHowTitle: "كيف يعمل؟",
+    homeWhyTitle: "لماذا تستخدم Email.TM؟",
+  homeWhyText:
+    "يمكن أن يكون Email.TM مفيدًا عندما تريد استقبال الرسائل دون مشاركة عنوان بريدك الإلكتروني الأساسي. يمكن أن يساعدك ذلك على تقليل الرسائل غير المرغوب فيها في بريدك الرئيسي وتوفير عنوان مؤقت مناسب للاستخدامات قصيرة المدى.",
+      homeFaqTitle: "الأسئلة الشائعة",
+  homeFaqQuestion1: "ما هو البريد الإلكتروني المؤقت؟",
+  homeFaqAnswer1:
+    "البريد الإلكتروني المؤقت هو عنوان بريد قصير المدة يمكن استخدامه لاستقبال الرسائل دون استخدام عنوان بريدك الإلكتروني الأساسي.",
+  homeFaqQuestion2: "هل يمكنني استقبال الرسائل؟",
+  homeFaqAnswer2:
+    "نعم. يتيح لك Email.TM استقبال الرسائل في صندوق البريد المؤقت الخاص بك.",
+  homeFaqQuestion3: "كم تدوم صلاحية البريد الإلكتروني المؤقت؟",
+  homeFaqAnswer3:
+    "تستمر صلاحية البريد الإلكتروني حسب المدة التي تختارها عند إنشائه.",
+  homeFaqQuestion4: "هل يمكنني استعادة بريد إلكتروني منتهي الصلاحية؟",
+  homeFaqAnswer4:
+    "لا. بعد انتهاء صلاحية البريد الإلكتروني المؤقت، لا يمكن استعادته.",
+  homeFaqLink: "عرض جميع الأسئلة الشائعة",
+    homeStepCreateTitle: "1. إنشاء بريد إلكتروني",
+  homeStepCreateText: "أنشئ عنوان بريد إلكتروني مؤقت في ثوانٍ.",
+  homeStepReceiveTitle: "2. استقبال الرسائل",
+  homeStepReceiveText:
+    "استخدم عنوانك المؤقت لاستقبال الرسائل في صندوق الوارد.",
+  homeStepExpireTitle: "3. انتهاء صلاحية البريد",
+  homeStepExpireText:
+    "تنتهي صلاحية بريدك الإلكتروني المؤقت تلقائيًا حسب المدة التي اخترتها.",
   emailColumn: "عنوان البريد",
   expiresIn: "ينتهي خلال",
   actions: "إجراءات",
@@ -182,6 +246,38 @@ const es: StringMap = {
   dashboardSubtitle: "Todos los correos temporales que has creado en esta sesión.",
   noEmails: "Aún no has creado ningún correo.",
   noEmailsHint: "Haz clic en \"Crear nuevo\" para generar tu primer correo temporal.",
+    homeIntroTitle: "Correo temporal gratis",
+  homeIntroText:
+    "Crea una dirección de correo temporal al instante y úsala para recibir emails sin compartir tu dirección principal.",
+  homeWhatTitle: "¿Qué es un correo temporal?",
+  homeWhatText:
+    "Un correo temporal es una dirección de corta duración que permite recibir mensajes sin utilizar tu dirección de correo habitual.",
+  homeHowTitle: "Cómo funciona",
+    homeWhyTitle: "¿Por qué usar Email.TM?",
+  homeWhyText:
+    "Email.TM puede ser útil cuando quieres recibir mensajes sin compartir tu dirección de correo principal. Puede ayudarte a reducir los mensajes no deseados en tu bandeja de entrada principal y ofrecerte una dirección temporal para situaciones de corta duración.",
+      homeFaqTitle: "Preguntas frecuentes",
+  homeFaqQuestion1: "¿Qué es un correo temporal?",
+  homeFaqAnswer1:
+    "Un correo temporal es una dirección de corta duración que se puede utilizar para recibir mensajes sin usar tu dirección de correo principal.",
+  homeFaqQuestion2: "¿Puedo recibir correos?",
+  homeFaqAnswer2:
+    "Sí. Email.TM te permite recibir mensajes en tu bandeja de entrada temporal.",
+  homeFaqQuestion3: "¿Cuánto dura un correo temporal?",
+  homeFaqAnswer3:
+    "El correo dura según el tiempo que selecciones al crearlo.",
+  homeFaqQuestion4: "¿Puedo recuperar un correo que ha caducado?",
+  homeFaqAnswer4:
+    "No. Una vez que un correo temporal caduca, no se puede recuperar.",
+  homeFaqLink: "Ver todas las preguntas frecuentes",
+    homeStepCreateTitle: "1. Crear un correo",
+  homeStepCreateText: "Crea una dirección de correo temporal en segundos.",
+  homeStepReceiveTitle: "2. Recibir mensajes",
+  homeStepReceiveText:
+    "Usa tu dirección temporal para recibir correos en tu bandeja de entrada.",
+  homeStepExpireTitle: "3. El correo caduca",
+  homeStepExpireText:
+    "Tu correo temporal caduca automáticamente según el tiempo de duración seleccionado.",
   emailColumn: "Dirección de correo",
   expiresIn: "Expira en",
   actions: "Acciones",
@@ -250,6 +346,38 @@ const pt: StringMap = {
   dashboardSubtitle: "Todos os emails temporários que você criou nesta sessão.",
   noEmails: "Você ainda não criou nenhum email.",
   noEmailsHint: "Clique em \"Criar novo\" para gerar seu primeiro email temporário.",
+    homeIntroTitle: "Email temporário grátis",
+  homeIntroText:
+    "Crie um endereço de email temporário instantaneamente e use-o para receber emails sem compartilhar o seu endereço principal.",
+  homeWhatTitle: "O que é um email temporário?",
+  homeWhatText:
+    "Um email temporário é um endereço de curta duração que permite receber mensagens sem usar o seu endereço de email habitual.",
+  homeHowTitle: "Como funciona",
+    homeWhyTitle: "Por que usar o Email.TM?",
+  homeWhyText:
+    "O Email.TM pode ser útil quando você deseja receber mensagens sem compartilhar seu endereço de email principal. Ele pode ajudar a reduzir mensagens indesejadas na sua caixa de entrada principal e oferecer um endereço temporário para situações de curta duração.",
+      homeFaqTitle: "Perguntas frequentes",
+  homeFaqQuestion1: "O que é um email temporário?",
+  homeFaqAnswer1:
+    "Um email temporário é um endereço de curta duração que pode ser usado para receber mensagens sem utilizar o seu endereço de email principal.",
+  homeFaqQuestion2: "Posso receber emails?",
+  homeFaqAnswer2:
+    "Sim. O Email.TM permite receber mensagens na sua caixa de entrada temporária.",
+  homeFaqQuestion3: "Quanto tempo dura um email temporário?",
+  homeFaqAnswer3:
+    "O email permanece ativo pelo período que você selecionar ao criá-lo.",
+  homeFaqQuestion4: "Posso recuperar um email expirado?",
+  homeFaqAnswer4:
+    "Não. Depois que um email temporário expira, não é possível recuperá-lo.",
+  homeFaqLink: "Ver todas as perguntas frequentes",
+    homeStepCreateTitle: "1. Criar um email",
+  homeStepCreateText: "Crie um endereço de email temporário em segundos.",
+  homeStepReceiveTitle: "2. Receber mensagens",
+  homeStepReceiveText:
+    "Use o seu endereço temporário para receber emails na sua caixa de entrada.",
+  homeStepExpireTitle: "3. O email expira",
+  homeStepExpireText:
+    "O seu email temporário expira automaticamente de acordo com o tempo de duração selecionado.",
   emailColumn: "Endereço de email",
   expiresIn: "Expira em",
   actions: "Ações",
@@ -318,6 +446,38 @@ const fr: StringMap = {
   dashboardSubtitle: "Tous les emails temporaires que vous avez créés dans cette session.",
   noEmails: "Vous n'avez pas encore créé d'email.",
   noEmailsHint: "Cliquez sur \"Créer nouveau\" pour générer votre premier email temporaire.",
+    homeIntroTitle: "Email temporaire gratuit",
+  homeIntroText:
+    "Créez instantanément une adresse email temporaire et utilisez-la pour recevoir des emails sans partager votre adresse principale.",
+  homeWhatTitle: "Qu'est-ce qu'un email temporaire ?",
+  homeWhatText:
+    "Un email temporaire est une adresse à durée limitée qui permet de recevoir des messages sans utiliser votre adresse email habituelle.",
+  homeHowTitle: "Comment ça marche",
+    homeWhyTitle: "Pourquoi utiliser Email.TM ?",
+  homeWhyText:
+    "Email.TM peut être utile lorsque vous souhaitez recevoir des messages sans partager votre adresse email principale. Il peut vous aider à réduire les messages indésirables dans votre boîte de réception principale et à disposer d'une adresse temporaire pour des situations de courte durée.",
+      homeFaqTitle: "Questions fréquentes",
+  homeFaqQuestion1: "Qu'est-ce qu'un email temporaire ?",
+  homeFaqAnswer1:
+    "Un email temporaire est une adresse à durée limitée qui peut être utilisée pour recevoir des messages sans utiliser votre adresse email principale.",
+  homeFaqQuestion2: "Puis-je recevoir des emails ?",
+  homeFaqAnswer2:
+    "Oui. Email.TM vous permet de recevoir des messages dans votre boîte de réception temporaire.",
+  homeFaqQuestion3: "Combien de temps dure un email temporaire ?",
+  homeFaqAnswer3:
+    "L'email reste actif pendant la durée que vous sélectionnez lors de sa création.",
+  homeFaqQuestion4: "Puis-je récupérer un email expiré ?",
+  homeFaqAnswer4:
+    "Non. Une fois qu'un email temporaire expire, il ne peut pas être récupéré.",
+  homeFaqLink: "Voir toutes les questions fréquentes",
+    homeStepCreateTitle: "1. Créer un email",
+  homeStepCreateText: "Créez une adresse email temporaire en quelques secondes.",
+  homeStepReceiveTitle: "2. Recevoir des messages",
+  homeStepReceiveText:
+    "Utilisez votre adresse temporaire pour recevoir des emails dans votre boîte de réception.",
+  homeStepExpireTitle: "3. L'email expire",
+  homeStepExpireText:
+    "Votre email temporaire expire automatiquement selon la durée sélectionnée.",
   emailColumn: "Adresse email",
   expiresIn: "Expire dans",
   actions: "Actions",

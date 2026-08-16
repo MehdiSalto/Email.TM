@@ -26,11 +26,11 @@ const faqs = [
     answer:
       "No. The current Email.TM application is designed for receiving emails. It does not provide an email-sending feature.",
   },
-  {
-    question: "What happens when my temporary email expires?",
-    answer:
-      "After the selected lifetime has passed, the temporary email is considered expired. The service performs cleanup of expired email records.",
-  },
+{
+  question: "What happens when my temporary email expires?",
+  answer:
+    "After the selected lifetime has passed, the temporary email is considered expired. Email.TM removes the associated temporary email record from its application database, and the inbox may no longer be available through Email.TM.",
+},
   {
     question: "Can I recover an expired email?",
     answer:
@@ -51,11 +51,11 @@ const faqs = [
     answer:
       "There can be several reasons. The sender may not have completed delivery, the message may still be processing, or the temporary address may no longer be active. You can refresh the inbox and check again while the address is still valid.",
   },
-  {
-    question: "How often does the inbox refresh?",
-    answer:
-      "The Email.TM inbox can refresh to check for new messages while the temporary email is active.",
-  },
+{
+  question: "How often does the inbox refresh?",
+  answer:
+    "The Email.TM inbox checks for new messages while the temporary email is active. You can also refresh the inbox to check for newly received messages.",
+},
   {
     question: "Can I create multiple temporary email addresses?",
     answer:

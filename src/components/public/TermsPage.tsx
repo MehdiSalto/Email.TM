@@ -52,19 +52,21 @@ export default function TermsPage() {
         </p>
       </section>
 
-      <section>
-        <h2>5. Temporary Email Limitations</h2>
-        <p>
-          Temporary email addresses have a limited lifetime. When an address
-          expires, its associated temporary inbox and messages may no longer
-          be available.
-        </p>
-        <p>
-          You should not use a temporary email address for important accounts,
-          financial services, password recovery, or any service where
-          permanent access to the email address is required.
-        </p>
-      </section>
+<section>
+  <h2>5. Temporary Email Limitations</h2>
+  <p>
+    Temporary email addresses have a limited lifetime. When an address
+    expires, Email.TM removes the associated temporary email record from
+    its application database, and access to the inbox through Email.TM may
+    no longer be available. The availability and retention of messages may
+    also depend on the underlying mail service.
+  </p>
+  <p>
+    You should not use a temporary email address for important accounts,
+    financial services, password recovery, or any service where permanent
+    access to the email address is required.
+  </p>
+</section>
 
       <section>
         <h2>6. Shared Inbox Links</h2>

@@ -12,6 +12,8 @@ import Table from "@cloudscape-design/components/table";
 import CopyToClipboard from "@cloudscape-design/components/copy-to-clipboard";
 import StatusIndicator from "@cloudscape-design/components/status-indicator";
 import Icon from "@cloudscape-design/components/icon";
+import ColumnLayout from "@cloudscape-design/components/column-layout";
+import Link from "@cloudscape-design/components/link";
 
 interface DashboardProps {
   onOpenInbox: (id: string) => void;
@@ -136,6 +138,112 @@ export default function Dashboard({ onOpenInbox, onCreate, refreshKey }: Dashboa
           />
         )}
       </Container>
+            <div className="home-info">
+            <Container>
+        <SpaceBetween size="l">
+          <Header variant="h2">
+            {t("homeIntroTitle")}
+          </Header>
+
+          <Box color="text-body-secondary">
+            {t("homeIntroText")}
+          </Box>
+        </SpaceBetween>
+      </Container>
+            <Container>
+        <SpaceBetween size="l">
+          <Header variant="h2">
+            {t("homeWhatTitle")}
+          </Header>
+
+          <Box color="text-body-secondary">
+            {t("homeWhatText")}
+          </Box>
+        </SpaceBetween>
+      </Container>
+            <Container>
+        <SpaceBetween size="l">
+          <Header variant="h2">
+            {t("homeHowTitle")}
+          </Header>
+
+          <ColumnLayout columns={3} variant="text-grid">
+            <Box>
+  <Box variant="h3">{t("homeStepCreateTitle")}</Box>
+  <Box color="text-body-secondary">
+    {t("homeStepCreateText")}
+  </Box>
+</Box>
+
+<Box>
+  <Box variant="h3">{t("homeStepReceiveTitle")}</Box>
+  <Box color="text-body-secondary">
+    {t("homeStepReceiveText")}
+  </Box>
+</Box>
+
+<Box>
+  <Box variant="h3">{t("homeStepExpireTitle")}</Box>
+  <Box color="text-body-secondary">
+    {t("homeStepExpireText")}
+  </Box>
+</Box>
+          </ColumnLayout>
+        </SpaceBetween>
+      </Container>
+            <Container>
+        <SpaceBetween size="l">
+          <Header variant="h2">
+            {t("homeWhyTitle")}
+          </Header>
+
+          <Box color="text-body-secondary">
+            {t("homeWhyText")}
+          </Box>
+        </SpaceBetween>
+      </Container>
+            <Container>
+        <SpaceBetween size="l">
+          <Header variant="h2">
+            {t("homeFaqTitle")}
+          </Header>
+
+          <SpaceBetween size="m">
+            <Box>
+              <Box variant="h3">{t("homeFaqQuestion1")}</Box>
+              <Box color="text-body-secondary">
+                {t("homeFaqAnswer1")}
+              </Box>
+            </Box>
+
+            <Box>
+              <Box variant="h3">{t("homeFaqQuestion2")}</Box>
+              <Box color="text-body-secondary">
+                {t("homeFaqAnswer2")}
+              </Box>
+            </Box>
+
+            <Box>
+              <Box variant="h3">{t("homeFaqQuestion3")}</Box>
+              <Box color="text-body-secondary">
+                {t("homeFaqAnswer3")}
+              </Box>
+            </Box>
+
+            <Box>
+              <Box variant="h3">{t("homeFaqQuestion4")}</Box>
+              <Box color="text-body-secondary">
+                {t("homeFaqAnswer4")}
+              </Box>
+            </Box>
+
+            <Link href="#/faq">
+              {t("homeFaqLink")}
+            </Link>
+          </SpaceBetween>
+        </SpaceBetween>
+      </Container>
+      </div>
     </ContentLayout>
   );
 }
