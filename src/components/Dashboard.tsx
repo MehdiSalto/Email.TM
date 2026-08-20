@@ -169,7 +169,7 @@ export default function Dashboard({
         onClick={() => handleDelete(item.id)}
       >
         <span style={{ color: "#d91515" }}>
-          Delete
+          {t("delete")}
         </span>
       </Button>
     </SpaceBetween>
