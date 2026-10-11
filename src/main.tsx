@@ -5,6 +5,7 @@ import App from "./App";
 // Cloudscape global styles (required for all Cloudscape components)
 import "@cloudscape-design/global-styles/index.css";
 import "./home.css";
+import "./public.css";
 
 const fontStyle = document.createElement("style");
 

@@ -1,18 +1,7 @@
-import Container from "@cloudscape-design/components/container";
-import Header from "@cloudscape-design/components/header";
-import SpaceBetween from "@cloudscape-design/components/space-between";
-import Link from "@cloudscape-design/components/link";
-
+import PublicPage from "./PublicPage";
 export default function AboutPage() {
   return (
-    <Container
-      header={
-        <Header variant="h1">
-          About Email.TM
-        </Header>
-      }
-    >
-      <SpaceBetween size="l">
+    <PublicPage title="About Email Time" description="A simple tool for receiving email during short, practical tasks.">
         <p>
           Email.TM is a temporary email service that lets you create a
           disposable email address without creating a traditional account.
@@ -48,7 +37,7 @@ export default function AboutPage() {
 
         <p>
           You can learn more about the process on our{" "}
-          <Link href="#/how-it-works">How It Works</Link> page.
+          <a href="/how-it-works">How It Works</a> page.
         </p>
 
         <h2>What Email.TM is designed for</h2>
@@ -81,7 +70,7 @@ export default function AboutPage() {
         <p>
           Like any online service, Email.TM should be used responsibly and
           in accordance with applicable laws and the service's{" "}
-          <Link href="#/terms">Terms of Service</Link>. Avoid using temporary
+          <a href="/terms">Terms of Service</a>. Avoid using temporary
           email for sensitive information or activities that require a
           permanent and private mailbox.
         </p>
@@ -90,13 +79,12 @@ export default function AboutPage() {
 
         <p>
           If you are new to temporary email, our{" "}
-          <Link href="#/what-is-temporary-email">
+          <a href="/what-is-temporary-email">
             What Is a Temporary Email?
-          </Link>{" "}
+          </a>{" "}
           guide explains the concept, common uses, advantages, and
           limitations in more detail.
         </p>
-      </SpaceBetween>
-    </Container>
+    </PublicPage>
   );
 }

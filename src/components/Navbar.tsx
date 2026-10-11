@@ -2,6 +2,7 @@ import { useLanguage } from "../language";
 import { useTheme } from "../theme";
 import { LANGUAGES } from "../i18n";
 import type { LanguageCode } from "../types";
+import { articlePath, normalizePath } from "../routing";
 import Select from "@cloudscape-design/components/select";
 import Toggle from "@cloudscape-design/components/toggle";
 import Icon from "@cloudscape-design/components/icon";
@@ -16,11 +17,12 @@ export default function Navbar() {
   }));
 
   const navLinks = [
-    { href: "#/", label: t("navHome") },
-    { href: "#/how-it-works", label: t("navHowItWorks") },
-    { href: "#/faq", label: t("navFaq") },
-    { href: "#/guides", label: t("navGuides") },
-    { href: "#/about", label: t("navAbout") },
+    { href: "/", label: t("navHome") },
+    { href: "/how-it-works", label: t("navHowItWorks") },
+    { href: "/faq", label: t("navFaq") },
+    { href: "/guides", label: t("navGuides") },
+    { href: articlePath(undefined, lang === "ar" ? "ar" : "en"), label: t("navArticles") },
+    { href: "/about", label: t("navAbout") },
   ];
 
   return (
@@ -73,7 +75,7 @@ export default function Navbar() {
   right: 0;
   bottom: 0;
   height: 2px;
-  background: #0A84FF;
+  background: var(--et-accent);
   border-radius: 2px;
   transform: scaleX(0);
   transform-origin: center;
@@ -81,7 +83,7 @@ export default function Navbar() {
 }
 
           .emailtm-navbar-link:hover {
-            color: #0A84FF;
+            color: var(--et-accent);
             opacity: 1;
             text-shadow: 0 0 10px rgba(10, 132, 255, 0.25);
           }
@@ -91,7 +93,7 @@ export default function Navbar() {
 }
 
 .emailtm-navbar-link.active {
-  color: #0A84FF;
+  color: var(--et-accent);
   opacity: 1;
 }
 
@@ -160,17 +162,17 @@ export default function Navbar() {
         <div className="emailtm-navbar-inner">
           {/* Brand */}
           <a
-            href="#/"
+            href="/"
             className="emailtm-navbar-brand"
             style={{
               textDecoration: "none",
               display: "flex",
               alignItems: "center",
               gap: "9px",
-              color: "#0A84FF",
+              color: "var(--et-accent)",
             }}
           >
-            <span style={{ color: "#0A84FF", display: "flex" }}>
+            <span style={{ color: "var(--et-accent)", display: "flex" }}>
                   <Icon name="envelope" size="medium" />
             </span>
 
@@ -195,8 +197,9 @@ export default function Navbar() {
     key={link.href}
     href={link.href}
     className={`emailtm-navbar-link ${
-      window.location.hash === link.href ? "active" : ""
+      (link.href.endsWith("/articles") ? normalizePath(window.location.pathname).startsWith(link.href) : normalizePath(window.location.pathname) === link.href) ? "active" : ""
     }`}
+    aria-current={(link.href.endsWith("/articles") ? normalizePath(window.location.pathname).startsWith(link.href) : normalizePath(window.location.pathname) === link.href) ? "page" : undefined}
   >
                 {link.label}
               </a>

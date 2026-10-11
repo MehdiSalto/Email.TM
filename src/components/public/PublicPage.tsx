@@ -4,15 +4,20 @@ interface PublicPageProps {
   title: string;
   description?: string;
   children: ReactNode;
+  language?: "en" | "ar";
 }
 
 export default function PublicPage({
   title,
   description,
   children,
+  language = "en",
 }: PublicPageProps) {
   return (
     <main
+      className="public-page"
+      lang={language}
+      dir={language === "ar" ? "rtl" : "ltr"}
       style={{
         maxWidth: "900px",
         margin: "0 auto",

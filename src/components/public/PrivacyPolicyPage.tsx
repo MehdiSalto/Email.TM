@@ -6,6 +6,7 @@ export default function PrivacyPolicyPage() {
       title="Privacy Policy"
       description="How Email.TM handles temporary email addresses, inbox messages, local storage, and related service data."
     >
+      <p className="policy-date">Last updated: <time dateTime="2026-10-11">October 11, 2026</time></p>
       <section>
         <h2>1. Overview</h2>
         <p>
@@ -28,9 +29,11 @@ export default function PrivacyPolicyPage() {
         </p>
         <p>
           Temporary email accounts are intended for short-term use. When a
-          temporary email expires, Email.TM removes the associated temporary
-          email record from its application database. The availability and
-          retention of messages may also depend on the underlying mail service.
+          temporary email expires, you should not rely on continued access.
+          The application performs cleanup of expired records; this is not a
+          guarantee that all copies of messages are deleted at the expiration
+          time. Retention may also depend on the underlying mail service and
+          the sender.
         </p>
       </section>
 
@@ -47,6 +50,13 @@ export default function PrivacyPolicyPage() {
           You should avoid using a temporary email address for sensitive
           information or services that require permanent access to your
           mailbox.
+        </p>
+        <p>
+          HTML messages are displayed in an isolated frame that blocks scripts
+          and forms. If a message includes externally hosted HTTPS images, your
+          browser may request those images from the sender or another host,
+          exposing network information such as your IP address to that host.
+          Links you choose to open are governed by the destination site's policy.
         </p>
       </section>
 
@@ -75,6 +85,10 @@ export default function PrivacyPolicyPage() {
           The application also uses local storage to remember certain
           preferences, such as your selected language and display theme.
         </p>
+        <p>Clearing site data removes these browser records and preferences.
+          Removing a mailbox from the dashboard removes its local entry; it
+          does not promise deletion of provider records or revocation of a
+          previously shared inbox link.</p>
       </section>
 
       <section>
@@ -88,6 +102,10 @@ export default function PrivacyPolicyPage() {
           Information required to create and operate temporary email
           accounts may therefore be processed through these services.
         </p>
+        <p>The website is hosted on Vercel. Infrastructure providers may process
+          request and technical data required to deliver and protect their services.
+          See the privacy information published by <a href="https://supabase.com/privacy">Supabase</a>,
+          {" "}<a href="https://mail.tm/en/privacy/">mail.tm</a>, and <a href="https://vercel.com/legal/privacy-policy">Vercel</a>.</p>
       </section>
 
       <section>
@@ -107,11 +125,22 @@ export default function PrivacyPolicyPage() {
       <section>
         <h2>8. Cookies, Analytics, and Advertising</h2>
         <p>
-          The current application code reviewed for this policy does not
-          establish a specific analytics service or advertising platform.
-          This policy may be updated if analytics, advertising, or other
-          tracking technologies are added to Email.TM in the future.
+          Email Time includes Google Analytics to measure website usage and
+          the Google AdSense script for advertising. These services may use
+          cookies and similar technologies and process information about
+          page visits, browser or device details, and interactions according
+          to their configuration and Google's policies.
         </p>
+        <p>Third-party vendors, including Google, may use cookies to serve ads
+          based on previous visits to this website or other websites. Google's
+          advertising cookies allow Google and its partners to personalize ads
+          using browsing activity. Whether ads are displayed depends on the
+          service's availability and configuration.</p>
+        <p>You can manage personalized advertising through <a href="https://myadcenter.google.com/">Google My Ad Center</a>,
+          review <a href="https://policies.google.com/technologies/partner-sites">how Google uses information from partner websites</a>,
+          or use the <a href="https://tools.google.com/dlpage/gaoptout">Google Analytics opt-out browser add-on</a>.
+          Browser settings can also block or clear cookies. These controls are
+          separate from removing local mailbox entries.</p>
       </section>
 
       <section>
@@ -136,6 +165,8 @@ export default function PrivacyPolicyPage() {
           infrastructure, or data practices change. Any updated version will
           be published on this page.
         </p>
+        <p>For questions about this website's published information, visit our <a href="/contact">contact page</a>.
+          Do not include private mailbox contents or access links in a public report.</p>
       </section>
     </PublicPage>
   );

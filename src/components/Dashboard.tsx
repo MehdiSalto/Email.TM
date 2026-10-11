@@ -15,6 +15,7 @@ import StatusIndicator from "@cloudscape-design/components/status-indicator";
 import Icon from "@cloudscape-design/components/icon";
 import ColumnLayout from "@cloudscape-design/components/column-layout";
 import Link from "@cloudscape-design/components/link";
+import HomeArticles from "./public/HomeArticles";
 
 interface DashboardProps {
   onOpenInbox: (id: string) => void;
@@ -48,7 +49,7 @@ export default function Dashboard({
   onCreate,
   refreshKey,
 }: DashboardProps) {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
 
   const [emails, setEmails] = useState<EmailRecord[]>([]);
 
@@ -66,7 +67,7 @@ export default function Dashboard({
       header={
         <Header
           variant="h1"
-          description={t("dashboardSubtitle")}
+          description={t("homeIntroText")}
           actions={
             <Button
               variant="primary"
@@ -77,11 +78,11 @@ export default function Dashboard({
             </Button>
           }
         >
-          {t("dashboardTitle")}
+          {t("homeIntroTitle")}
         </Header>
       }
     >
-      <Container>
+      <Container header={<Header variant="h2" description={t("dashboardSubtitle")}>{t("dashboardTitle")}</Header>}>
         {emails.length === 0 ? (
           <Box
             textAlign="center"
@@ -272,6 +273,8 @@ export default function Dashboard({
         )}
       </Container>
 
+      <HomeArticles language={lang === "ar" ? "ar" : "en"} />
+
       {/* Home information */}
       <div className="home-info">
         <Container>
@@ -400,7 +403,7 @@ export default function Dashboard({
                 </Box>
               </Box>
 
-              <Link href="#/faq">
+              <Link href="/faq">
                 {t("homeFaqLink")}
               </Link>
             </SpaceBetween>

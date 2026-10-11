@@ -37,7 +37,7 @@ const guides = [
   title: "What Happens When a Temporary Email Expires?",
   paragraphs: [
     "A temporary email is designed to remain available only for its selected lifetime. After that period, the address is considered expired.",
-    "Email.TM removes the associated expired temporary email record from its application database. After expiration, you should not rely on the temporary email address or its inbox remaining available through Email.TM.",
+    "After expiration, you should not rely on the temporary email address or its inbox remaining available through Email.TM. The application cleans up expired records; retention by the sender and underlying provider is separate.",
     "For this reason, save anything important before the temporary email expires and never use a temporary address as the only recovery method for an important account.",
   ],
 },
@@ -77,11 +77,13 @@ export default function GuidesPage() {
       </div>
 
       <section style={{ marginTop: "40px" }}>
+        <h2>Detailed practical articles</h2>
+        <p>For examples and step-by-step checklists, read our <a href="/articles">original articles</a> about choosing an address, delayed confirmations, inbox sharing, and testing email workflows. <a href="/ar/articles" lang="ar" dir="rtl">المقالات متاحة أيضًا بالعربية.</a></p>
         <h2>Learn more</h2>
 
         <p>
           If you are new to temporary email, visit our{" "}
-          <a href="#/what-is-temporary-email">
+          <a href="/what-is-temporary-email">
             What Is a Temporary Email?
           </a>{" "}
           page for a detailed explanation.
@@ -89,8 +91,8 @@ export default function GuidesPage() {
 
         <p>
           You can also read{" "}
-          <a href="#/how-it-works">How Email.TM Works</a> or visit our{" "}
-          <a href="#/faq">FAQ</a> for common questions.
+          <a href="/how-it-works">How Email.TM Works</a> or visit our{" "}
+          <a href="/faq">FAQ</a> for common questions.
         </p>
       </section>
     </PublicPage>

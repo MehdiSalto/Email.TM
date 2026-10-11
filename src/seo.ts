@@ -1,9 +1,13 @@
 import type { LanguageCode } from "./types";
+import { findArticle } from "./content/articles";
+import { articleLanguage, articlePath } from "./routing";
 
 interface SeoData {
   title: string;
   description: string;
 }
+
+export const SITE_URL = "https://email-tm.vercel.app";
 
 const seo: Record<string, Record<LanguageCode, SeoData>> = {
   home: {
@@ -259,8 +263,46 @@ const seo: Record<string, Record<LanguageCode, SeoData>> = {
   },
 };
 
-export function updateSeo(page: string, lang: LanguageCode) {
-  const data = seo[page]?.[lang] ?? seo.home.en;
+export function getSeoData(page: string, lang: LanguageCode = "en", slug?: string): SeoData {
+  const language = lang === "ar" ? "ar" : "en";
+  if (page === "article") {
+    const article = findArticle(slug);
+    if (article) return { title: `${article[language].title} — Email Time`, description: article[language].excerpt };
+  }
+  if (page === "articles") return language === "ar"
+    ? { title: "مقالات أصلية عن البريد المؤقت — إيميل تايم", description: "أربعة مقالات عملية عن اختيار البريد المناسب وتأخر رسائل التأكيد وصلاحية الصندوق واختبار رسائل التطبيقات." }
+    : { title: "Original Temporary Email Articles — Email Time", description: "Practical original articles about choosing an email address, missing confirmations, inbox expiration and sharing, and testing sign-up email flows." };
+  if (page === "create") return language === "ar"
+    ? { title: "إنشاء بريد مؤقت — إيميل تايم", description: "اختر مدة صلاحية صندوقك المؤقت وأنشئ عنوانًا لاستقبال الرسائل." }
+    : { title: "Create a Temporary Email — Email Time", description: "Choose a mailbox lifetime and create an address for receiving temporary messages." };
+  if (page.startsWith("inbox")) return { title: language === "ar" ? "صندوق الوارد — إيميل تايم" : "Temporary Inbox — Email Time", description: language === "ar" ? "صندوق وارد مؤقت لاستقبال الرسائل." : "A temporary inbox for receiving messages." };
+  return seo[page]?.[lang] ?? { title: "Page not found — Email Time", description: "This page could not be found. Return to the homepage or browse our articles." };
+}
+
+export function isIndexable(page: string, slug?: string): boolean {
+  return Boolean(seo[page] || page === "articles" || (page === "article" && findArticle(slug)));
+}
+
+export function articleSchema(slug: string, language: "en" | "ar") {
+  const article = findArticle(slug);
+  if (!article) return null;
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: article[language].title,
+    description: article[language].excerpt,
+    datePublished: article.published,
+    dateModified: article.published,
+    inLanguage: language,
+    mainEntityOfPage: SITE_URL + articlePath(slug, language),
+    author: { "@type": "Organization", name: "Email Time", url: SITE_URL + "/about" },
+    publisher: { "@type": "Organization", name: "Email Time", url: SITE_URL },
+  };
+}
+
+export function updateSeo(page: string, lang: LanguageCode, path = "/", slug?: string) {
+  // Existing informational pages are English; their metadata should match their actual content.
+  const data = getSeoData(page, page === "home" || page === "create" || page.startsWith("inbox") || page === "article" || page === "articles" ? lang : "en", slug);
 
   document.title = data.title;
 
@@ -276,4 +318,24 @@ export function updateSeo(page: string, lang: LanguageCode) {
   setMeta('meta[property="og:description"]', data.description);
   setMeta('meta[name="twitter:title"]', data.title);
   setMeta('meta[name="twitter:description"]', data.description);
+  setMeta('meta[name="robots"]', isIndexable(page, slug) ? "index, follow" : "noindex, follow");
+  setMeta('meta[property="og:type"]', page === "article" && findArticle(slug) ? "article" : "website");
+
+  const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]') ?? document.createElement("link");
+  canonical.rel = "canonical";
+  canonical.href = SITE_URL + (isIndexable(page, slug) ? path : "/");
+  if (!canonical.parentNode) document.head.appendChild(canonical);
+  setMeta('meta[property="og:url"]', canonical.href);
+
+  document.getElementById("article-schema")?.remove();
+  if (page === "article" && slug) {
+    const data = articleSchema(slug, articleLanguage(path));
+    if (data) {
+      const script = document.createElement("script");
+      script.id = "article-schema";
+      script.type = "application/ld+json";
+      script.textContent = JSON.stringify(data).replace(/</g, "\\u003c");
+      document.head.appendChild(script);
+    }
+  }
 }

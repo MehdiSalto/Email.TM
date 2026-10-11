@@ -14,7 +14,7 @@
 
 .home-info-section h2 {
   margin: 0 0 12px;
-  color: var(--color-text-heading, #f5f5f5);
+  color: var(--et-text);
   font-size: 24px;
   font-weight: 700;
 }
@@ -22,7 +22,7 @@
 .home-info-section p {
   max-width: 850px;
   margin: 0;
-  color: var(--color-text-body-secondary, #aab4c3);
+  color: var(--et-muted);
   font-size: 16px;
   line-height: 1.7;
 }
@@ -40,13 +40,13 @@
 
 .home-info-step h3 {
   margin: 0 0 8px;
-  color: var(--color-text-heading, #f5f5f5);
+  color: var(--et-text);
   font-size: 17px;
   font-weight: 600;
 }
 
 .home-info-step p {
-  color: var(--color-text-body-secondary, #aab4c3);
+  color: var(--et-muted);
   font-size: 15px;
   line-height: 1.65;
 }
@@ -60,14 +60,14 @@
 
 .home-faq-item h3 {
   margin: 0 0 7px;
-  color: var(--color-text-heading, #f5f5f5);
+  color: var(--et-text);
   font-size: 16px;
   font-weight: 600;
 }
 
 .home-faq-item p {
   margin: 0;
-  color: var(--color-text-body-secondary, #aab4c3);
+  color: var(--et-muted);
   font-size: 15px;
   line-height: 1.65;
 }
@@ -139,7 +139,7 @@
   .dashboard-mobile-label {
     font-size: 13px;
     font-weight: 600;
-    color: var(--color-text-body-secondary, #aab4c3);
+    color: var(--et-muted);
   }
 
   .dashboard-mobile-value {

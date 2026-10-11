@@ -1,8 +1,9 @@
 import { useLanguage } from "../language";
 import Icon from "@cloudscape-design/components/icon";
+import { articlePath } from "../routing";
 
 export default function Footer() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
 
   return (
     <>
@@ -21,13 +22,13 @@ export default function Footer() {
           }
 
           .emailtm-footer-link:hover {
-            color: #0A84FF;
+            color: var(--et-accent);
             opacity: 1;
             transform: translateX(3px);
           }
 
           .emailtm-footer-heading {
-            color: #0A84FF;
+            color: var(--et-accent);
             font-weight: 700;
             font-size: 15px;
             margin-bottom: 16px;
@@ -99,7 +100,7 @@ export default function Footer() {
                   marginBottom: "14px",
                 }}
               >
-                <span style={{ color: "#0A84FF", display: "flex" }}>
+                <span style={{ color: "var(--et-accent)", display: "flex" }}>
                       <Icon name="envelope" size="small" />
                 </span>
 
@@ -123,7 +124,7 @@ export default function Footer() {
             {/* Quick Links */}
             <div>
               <div className="emailtm-footer-heading">
-                Quick Links
+                {t("footerQuickLinks")}
               </div>
 
               <div
@@ -133,26 +134,30 @@ export default function Footer() {
                   gap: "11px",
                 }}
               >
-                <a className="emailtm-footer-link" href="#/">
+                <a className="emailtm-footer-link" href="/">
                   {t("navHome")}
                 </a>
 
                 <a
                   className="emailtm-footer-link"
-                  href="#/how-it-works"
+                  href="/how-it-works"
                 >
                   {t("navHowItWorks")}
                 </a>
 
-                <a className="emailtm-footer-link" href="#/faq">
+                <a className="emailtm-footer-link" href="/faq">
                   {t("navFaq")}
                 </a>
 
-                <a className="emailtm-footer-link" href="#/guides">
+                <a className="emailtm-footer-link" href="/guides">
                   {t("navGuides")}
                 </a>
 
-                <a className="emailtm-footer-link" href="#/about">
+                <a className="emailtm-footer-link" href={articlePath(undefined, lang === "ar" ? "ar" : "en")}>
+                  {t("navArticles")}
+                </a>
+
+                <a className="emailtm-footer-link" href="/about">
                   {t("navAbout")}
                 </a>
               </div>
@@ -161,7 +166,7 @@ export default function Footer() {
             {/* Legal */}
             <div>
               <div className="emailtm-footer-heading">
-                Legal
+                {t("footerLegal")}
               </div>
 
               <div
@@ -173,16 +178,16 @@ export default function Footer() {
               >
                 <a
                   className="emailtm-footer-link"
-                  href="#/privacy-policy"
+                  href="/privacy-policy"
                 >
-                  Privacy Policy
+                  {t("footerPrivacy")}
                 </a>
 
                 <a
                   className="emailtm-footer-link"
-                  href="#/terms"
+                  href="/terms"
                 >
-                  Terms of Service
+                  {t("footerTerms")}
                 </a>
               </div>
             </div>
@@ -190,7 +195,7 @@ export default function Footer() {
             {/* Support */}
             <div>
               <div className="emailtm-footer-heading">
-                Support
+                {t("footerSupport")}
               </div>
 
               <div
@@ -202,9 +207,9 @@ export default function Footer() {
               >
                 <a
                   className="emailtm-footer-link"
-                  href="#/contact"
+                  href="/contact"
                 >
-                  Contact
+                  {t("footerContact")}
                 </a>
               </div>
             </div>

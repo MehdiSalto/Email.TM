@@ -17,6 +17,7 @@ const STORAGE_KEY = "emailtime_lang";
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<LanguageCode>(() => {
+    if (window.location.pathname.startsWith("/ar/articles")) return "ar";
     try {
       const stored = localStorage.getItem(STORAGE_KEY) as LanguageCode | null;
       if (stored && LANGUAGES.some((l) => l.code === stored)) return stored;
@@ -38,7 +39,18 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
   }, [lang, dir]);
 
-  const setLang = (l: LanguageCode) => setLangState(l);
+  const setLang = (l: LanguageCode) => {
+    const articleRoute = window.location.pathname.replace(/\/$/, "").match(/^\/(?:ar\/)?articles(\/[^/]+)?$/);
+    if (articleRoute && (l === "en" || l === "ar")) {
+      const target = `${l === "ar" ? "/ar" : ""}/articles${articleRoute[1] ?? ""}`;
+      if (target !== window.location.pathname.replace(/\/$/, "")) {
+        try { localStorage.setItem(STORAGE_KEY, l); } catch { /* preferences are optional */ }
+        window.location.assign(target + window.location.search + window.location.hash);
+        return;
+      }
+    }
+    setLangState(l);
+  };
   const t = (key: string) => translate(lang, key);
 
   return (

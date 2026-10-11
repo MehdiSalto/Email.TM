@@ -15,6 +15,7 @@ import StatusIndicator from "@cloudscape-design/components/status-indicator";
 import ColumnLayout from "@cloudscape-design/components/column-layout";
 import Icon from "@cloudscape-design/components/icon";
 import Badge from "@cloudscape-design/components/badge";
+import EmailMessage from "./EmailMessage";
 
 interface InboxPageProps {
   emailId: string;
@@ -57,7 +58,7 @@ export default function InboxPage({ emailId, onBack }: InboxPageProps) {
   const [messageLoading, setMessageLoading] = useState(false);
   const [messageError, setMessageError] = useState<string | null>(null);
   const [timeLeft, setTimeLeft] = useState("");
-  const shareUrl = `${window.location.origin}/#/inbox/${emailId}`;
+  const shareUrl = `${window.location.origin}/inbox/${emailId}`;
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const loadInbox = useCallback(async (isRefresh = false) => {
@@ -281,13 +282,7 @@ export default function InboxPage({ emailId, onBack }: InboxPageProps) {
               )}
               <Box>
                 {selectedMessage.html && selectedMessage.html.length > 0 ? (
-                  <Box>
-    <div
-      dangerouslySetInnerHTML={{
-        __html: selectedMessage.html.join(""),
-      }}
-    />
-  </Box>
+                  <EmailMessage html={selectedMessage.html.join("")} title={selectedMessage.subject || t("inboxTitle")} />
 ) : selectedMessage.text ? (
   <Box variant="pre">{selectedMessage.text}</Box>
 ) : (

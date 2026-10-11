@@ -143,9 +143,9 @@ export default function WhatIsTemporaryEmailPage() {
 
         <p>
           If you are new to temporary email, see our{" "}
-          <a href="#/how-it-works">How It Works</a> page for a step-by-step
+          <a href="/how-it-works">How It Works</a> page for a step-by-step
           explanation or visit the{" "}
-          <a href="#/faq">FAQ</a> for answers to common questions.
+          <a href="/faq">FAQ</a> for answers to common questions.
         </p>
       </section>
     </PublicPage>

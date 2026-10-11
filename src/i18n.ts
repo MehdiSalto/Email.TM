@@ -19,6 +19,14 @@ export const DURATIONS: { key: DurationKey; hours: number }[] = [
 type StringMap = Record<string, string>;
 
 const en: StringMap = {
+  navArticles: "Articles",
+  footerQuickLinks: "Quick links",
+  footerLegal: "Legal",
+  footerPrivacy: "Privacy policy",
+  footerTerms: "Terms of service",
+  footerSupport: "Support",
+  footerContact: "Contact",
+
   siteName: "Email Time",
   siteNameAr: "إيميل تايم",
   tagline: "Free temporary email — no sign-up, no login",
@@ -120,6 +128,14 @@ const en: StringMap = {
 };
 
 const ar: StringMap = {
+  navArticles: "المقالات",
+  footerQuickLinks: "روابط سريعة",
+  footerLegal: "المعلومات القانونية",
+  footerPrivacy: "سياسة الخصوصية",
+  footerTerms: "شروط الاستخدام",
+  footerSupport: "المساعدة",
+  footerContact: "تواصل معنا",
+
   siteName: "إيميل تايم",
   siteNameAr: "Email Time",
   tagline: "بريد إلكتروني مؤقت مجاني — بدون تسجيل، بدون دخول",
@@ -221,6 +237,14 @@ const ar: StringMap = {
 };
 
 const es: StringMap = {
+  navArticles: "Artículos",
+  footerQuickLinks: "Enlaces rápidos",
+  footerLegal: "Información legal",
+  footerPrivacy: "Privacidad",
+  footerTerms: "Condiciones de uso",
+  footerSupport: "Ayuda",
+  footerContact: "Contacto",
+
   siteName: "Email Time",
   siteNameAr: "إيميل تايم",
   tagline: "Correo temporal gratis — sin registro, sin inicio de sesión",
@@ -322,6 +346,14 @@ const es: StringMap = {
 };
 
 const pt: StringMap = {
+  navArticles: "Artigos",
+  footerQuickLinks: "Links rápidos",
+  footerLegal: "Informação legal",
+  footerPrivacy: "Privacidade",
+  footerTerms: "Termos de uso",
+  footerSupport: "Ajuda",
+  footerContact: "Contato",
+
   siteName: "Email Time",
   siteNameAr: "إيميل تايم",
   tagline: "Email temporário grátis — sem cadastro, sem login",
@@ -423,6 +455,14 @@ const pt: StringMap = {
 };
 
 const fr: StringMap = {
+  navArticles: "Articles",
+  footerQuickLinks: "Liens utiles",
+  footerLegal: "Informations légales",
+  footerPrivacy: "Confidentialité",
+  footerTerms: "Conditions d’utilisation",
+  footerSupport: "Assistance",
+  footerContact: "Contact",
+
   siteName: "Email Time",
   siteNameAr: "إيميل تايم",
   tagline: "Email temporaire gratuit — sans inscription, sans connexion",

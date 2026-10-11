@@ -29,7 +29,7 @@ const steps = [
 {
   title: "6. The temporary email expires",
   text:
-    "When the selected lifetime has passed, the temporary email is considered expired. Email.TM removes the associated temporary email record from its application database, and the inbox may no longer be available through Email.TM.",
+    "When the selected lifetime has passed, the temporary email is considered expired. The inbox may no longer be available through Email.TM, and the application cleans up expired records. This does not guarantee deletion of every copy held by the sender or underlying mail provider at that moment.",
 },
 ];
 
